@@ -194,6 +194,7 @@
 // }
 
 import { useEffect, useState } from "react";
+import SliderColorChange from "/components/SliderColorChange.jsx";
 import { fetchDevices, sendReadings } from "/src/api/devicesApi.js";
 import {
   Box,
@@ -503,33 +504,16 @@ export default function App() {
                     </Box>
                   ) : (
                     <Box>
-                      <Slider
-                        min={sliderConfig.min}
-                        max={sliderConfig.max}
-                        step={sliderConfig.step}
-                        value={sliderValue}
-                        onChange={(e, val) => setSliderValue(val)}
-                        valueLabelDisplay="auto"
-                        valueLabelFormat={(value) =>
-                          `${value}${sliderConfig.unit}`
-                        }
-                        sx={{ mb: 2 }}
-                      />
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography variant="body2" color="text.secondary">
-                          {sliderConfig.min}
-                          {sliderConfig.unit}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {sliderConfig.max}
-                          {sliderConfig.unit}
-                        </Typography>
-                      </Box>
+                      {/* exclude leak and valve types because they dont use the slider */}
+                      {readingType &&
+                        !["Leak", "Valve State"].includes(readingType) && (
+                          <SliderColorChange
+                            readingType={readingType}
+                            sliderValue={sliderValue}
+                            setSliderValue={setSliderValue}
+                            sliderConfig={sliderConfig}
+                          />
+                        )}
                     </Box>
                   )}
                 </Paper>
